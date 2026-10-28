@@ -18,7 +18,7 @@ class ForceSensor
     }
 
     // Returns 0.0 (not pressed) to 1.0 (pressed very hard)
-    float Read() { return hw_->adc.GetFloat(channel_); }
+    float Read() { return ReadAnalogInput(*hw_, channel_); }
 
     // True while pressed harder than threshold
     bool IsPressed(float threshold = 0.05f) { return Read() > threshold; }

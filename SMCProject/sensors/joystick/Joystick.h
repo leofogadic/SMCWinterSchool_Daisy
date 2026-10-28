@@ -31,8 +31,8 @@ class Joystick
     float Y() { return Center(RawY()); }
 
     // 0.0 to 1.0 straight from the ADC
-    float RawX() { return hw_->adc.GetFloat(x_channel_); }
-    float RawY() { return hw_->adc.GetFloat(y_channel_); }
+    float RawX() { return ReadAnalogInput(*hw_, x_channel_); }
+    float RawY() { return ReadAnalogInput(*hw_, y_channel_); }
 
     // True while the stick is pressed down
     bool IsPressed() const { return sw.IsPressed(); }

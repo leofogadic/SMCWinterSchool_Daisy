@@ -69,11 +69,10 @@ int main(void)
 {
     Setup(hardware, AudioCallback);
     // 1. Init your sensors
-    // 2. StartAnalogInputs(hardware) if you use any analog sensor
 
     while(1)
     {
-        // 3. Read sensors, print, update variables the audio callback uses
+        // 2. Read sensors, print, update variables the audio callback uses
     }
 }
 ```
@@ -113,7 +112,6 @@ int main(void)
     Setup(hardware, AudioCallback);
 
     pot.Init(hardware, seed::A0);
-    StartAnalogInputs(hardware);
 
     while(1)
     {
@@ -133,7 +131,7 @@ Include everything with `#include "sensors/sensors.h"`. Pins below are suggestio
 ### Analog sensors
 
 All return a value from `0.0` to `1.0` with `Read()`.
-**After initializing all of them, call `StartAnalogInputs(hardware)` once.** Up to 12 analog channels.
+**Initialize all of them before the first `Read()`**: the ADC starts by itself on the first read, with the pins initialized so far. Up to 12 analog channels.
 
 | Sensor | Class | Init | Extras |
 | --- | --- | --- | --- |
@@ -198,7 +196,7 @@ Printing is slow. Never print inside `AudioCallback`, and add a small `System::D
 | `make program-dfu` can't find the device | Enter bootloader mode again (hold BOOT, tap RESET) |
 | Flashed, but nothing happens | Open a serial monitor (see [step 4](#4-see-the-output)) |
 | I²C sensor `Init()` returns `false` | Check SCL/SDA aren't swapped, and the sensor has power and GND |
-| Analog value stuck at 0 | Did you call `StartAnalogInputs(hardware)` after all `Init()`s? |
+| Analog value stuck at 0 | Was that sensor's `Init()` called after another analog sensor was already read? Do all `Init()`s first |
 | Clicks or dropouts in audio | Something slow is in `AudioCallback`; move it to the loop |
 
 ## Links
